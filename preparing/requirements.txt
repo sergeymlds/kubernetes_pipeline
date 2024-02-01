@@ -1,0 +1,5 @@
+boto3==1.21.15
+pandas==1.4.1
+pyjwt==1.7.1
+xlrd
+scipy

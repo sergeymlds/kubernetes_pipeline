@@ -1,0 +1,430 @@
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+    name: cron-dag-spar-wf
+spec:
+    schedule: "0 0 * * *"
+    concurrencyPolicy: "Replace"
+    startingDeadlineSeconds: 0
+    workflowSpec:
+        entrypoint: prediction-pipeline
+        templates:
+            - name: prediction-pipeline
+              dag:
+                tasks:
+
+                - name: prep
+                  template: python-preparing-script
+
+                - name: disc-update0
+                  dependencies: [prep]
+                  template: python-disc-updating-script0
+
+                - name: disc-update1
+                  dependencies: [prep]
+                  template: python-disc-updating-script1
+
+                - name: disc-update2
+                  dependencies: [prep]
+                  template: python-disc-updating-script2
+
+                - name: disc-update3
+                  dependencies: [prep]
+                  template: python-disc-updating-script3
+
+                - name: disc-update4
+                  dependencies: [prep]
+                  template: python-disc-updating-script4
+
+                - name: disc-update5
+                  dependencies: [prep]
+                  template: python-disc-updating-script5
+
+                - name: disc-update6
+                  dependencies: [prep]
+                  template: python-disc-updating-script6
+
+                - name: disc-update7
+                  dependencies: [prep]
+                  template: python-disc-updating-script7
+
+                - name: disc-update8
+                  dependencies: [prep]
+                  template: python-disc-updating-script8
+
+                - name: disc-update9
+                  dependencies: [prep]
+                  template: python-disc-updating-script9
+
+                - name: disc-update10
+                  dependencies: [prep]
+                  template: python-disc-updating-script10
+
+                - name: disc-update11
+                  dependencies: [prep]
+                  template: python-disc-updating-script11
+
+                - name: prediction0
+                  dependencies: [disc-update0]
+                  template: python-prediction-script0
+
+                - name: prediction1
+                  dependencies: [disc-update1]
+                  template: python-prediction-script1
+
+                - name: prediction2
+                  dependencies: [disc-update2]
+                  template: python-prediction-script2
+
+                - name: prediction3
+                  dependencies: [disc-update3]
+                  template: python-prediction-script3
+
+                - name: prediction4
+                  dependencies: [disc-update4]
+                  template: python-prediction-script4
+
+                - name: prediction5
+                  dependencies: [disc-update5]
+                  template: python-prediction-script5
+
+                - name: prediction6
+                  dependencies: [disc-update6]
+                  template: python-prediction-script6
+
+                - name: prediction7
+                  dependencies: [disc-update7]
+                  template: python-prediction-script7
+
+                - name: prediction8
+                  dependencies: [disc-update8]
+                  template: python-prediction-script8
+
+                - name: prediction9
+                  dependencies: [disc-update9]
+                  template: python-prediction-script9
+
+                - name: prediction10
+                  dependencies: [disc-update10]
+                  template: python-prediction-script10
+
+                - name: prediction11
+                  dependencies: [disc-update11]
+                  template: python-prediction-script11
+
+                - name: temp-promo-delete
+                  dependencies: [prediction0,prediction1,prediction2,prediction3,prediction4,prediction5,prediction6,prediction7,prediction8,prediction9,prediction10,prediction11]
+                  template: python-temp-promo-del-script
+
+
+            - name: python-preparing-script          
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/preparing:latest
+                  command: [bash]
+                  source: |
+                      python preparing.py
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-disc-updating-script0
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/discount_updating:latest
+                  command: [bash]
+                  source: |
+                      python discount_updating.py --stores '1553,1351,1371,1386,1411,1433,956,1511,862,764,670,542'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-disc-updating-script1
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/discount_updating:latest
+                  command: [bash]
+                  source: |
+                      python discount_updating.py --stores '1554,1352,1372,1388,1412,1434,957,1518,856,746,653'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-disc-updating-script2
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/discount_updating:latest
+                  command: [bash]
+                  source: |
+                      python discount_updating.py --stores '1567,1353,1373,1393,1413,1436,960,928,860,768,655'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-disc-updating-script3
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/discount_updating:latest
+                  command: [bash]
+                  source: |
+                      python discount_updating.py --stores '1568,1354,1374,1395,1414,1437,1475,980,846,741,1435'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-disc-updating-script4
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/discount_updating:latest
+                  command: [bash]
+                  source: |
+                      python discount_updating.py --stores '1593,1612,1375,1396,1671,1438,1476,939,848,726,1160'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-disc-updating-script5
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/discount_updating:latest
+                  command: [bash]
+                  source: |
+                      python discount_updating.py --stores '1594,1613,1378,1397,1415,1439,1477,938,847,711,599'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-disc-updating-script6
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/discount_updating:latest
+                  command: [bash]
+                  source: |
+                      python discount_updating.py --stores '1595,1356,1379,1398,1417,1442,1478,904,859,713,598'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-disc-updating-script7
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/discount_updating:latest
+                  command: [bash]
+                  source: |
+                      python discount_updating.py --stores '1596,1358,1380,1399,1418,1443,994,895,805,712,1175'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-disc-updating-script8
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/discount_updating:latest
+                  command: [bash]
+                  source: |
+                      python discount_updating.py --stores '1338,1359,1381,1403,1429,1444,1507,885,780,701,570'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-disc-updating-script9
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/discount_updating:latest
+                  command: [bash]
+                  source: |
+                      python discount_updating.py --stores '1346,1360,1382,1404,1430,1445,1508,878,782,685,571'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-disc-updating-script10
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/discount_updating:latest
+                  command: [bash]
+                  source: |
+                      python discount_updating.py --stores '1347,1361,1384,1405,1431,1464,1509,874,781,1419,922'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-disc-updating-script11
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/discount_updating:latest
+                  command: [bash]
+                  source: |
+                      python discount_updating.py --stores '1349,1370,1385,1407,1432,1465,1510,873,773,681,559'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-prediction-script0
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/prediction:latest
+                  command: [bash]
+                  source: |
+                      python prediction1.py --stores '1553,1351,1371,1386,1411,1433,956,1511,862,764,670,542'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-prediction-script1
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/prediction:latest
+                  command: [bash]
+                  source: |
+                      python prediction1.py --stores '1554,1352,1372,1388,1412,1434,957,1518,856,746,653'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-prediction-script2
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/prediction:latest
+                  command: [bash]
+                  source: |
+                      python prediction1.py --stores '1567,1353,1373,1393,1413,1436,960,928,860,768,655'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-prediction-script3
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/prediction:latest
+                  command: [bash]
+                  source: |
+                      python prediction1.py --stores '1568,1354,1374,1395,1414,1437,1475,980,846,741,1435'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-prediction-script4
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/prediction:latest
+                  command: [bash]
+                  source: |
+                      python prediction1.py --stores '1593,1612,1375,1396,1671,1438,1476,939,848,726,1160'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-prediction-script5
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/prediction:latest
+                  command: [bash]
+                  source: |
+                      python prediction1.py --stores '1594,1613,1378,1397,1415,1439,1477,938,847,711,599'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-prediction-script6
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/prediction:latest
+                  command: [bash]
+                  source: |
+                      python prediction1.py --stores '1595,1356,1379,1398,1417,1442,1478,904,859,713,598'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-prediction-script7
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/prediction:latest
+                  command: [bash]
+                  source: |
+                      python prediction1.py --stores '1596,1358,1380,1399,1418,1443,994,895,805,712,1175'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-prediction-script8
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/prediction:latest
+                  command: [bash]
+                  source: |
+                      python prediction1.py --stores '1338,1359,1381,1403,1429,1444,1507,885,780,701,570'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-prediction-script9
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/prediction:latest
+                  command: [bash]
+                  source: |
+                      python prediction1.py --stores '1346,1360,1382,1404,1430,1445,1508,878,782,685,571'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-prediction-script10
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/prediction:latest
+                  command: [bash]
+                  source: |
+                      python prediction1.py --stores '1347,1361,1384,1405,1431,1464,1509,874,781,1419,922'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-prediction-script11
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/prediction:latest
+                  command: [bash]
+                  source: |
+                      python prediction1.py --stores '1349,1370,1385,1407,1432,1465,1510,873,773,681,559'
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
+
+            - name: python-temp-promo-del-script
+              script:
+                  image: cr.yandex/crp479pqesbl9eqd05c2/temp_promo_deleting:latest
+                  command: [bash]
+                  source: |
+                      python temp_promo_deleting.py
+                  resources:
+                      requests:
+                          memory: 14Gi
+                      limits:
+                          memory: 18Gi
